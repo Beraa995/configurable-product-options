@@ -1,0 +1,20 @@
+{
+    "name": "bkozlic/configurable-options",
+    "description": "Magento 2 Module for configurable product",
+    "type": "magento2-module",
+    "license":"OSL-3.0",
+    "authors": [
+        {
+            "name": "Berin Kozlic",
+            "email": "berin.kozlic@gmail.com"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "BKozlic\\ConfigurableProducts\\": ""
+        }
+    }
+}

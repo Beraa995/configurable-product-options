@@ -11,7 +11,6 @@ use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 
 /**
  * Class Attributes
- * @package Bunited\SimpleOptions\Block\Adminhtml\Form\Field
  */
 class Attributes extends AbstractFieldArray
 {

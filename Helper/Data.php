@@ -40,11 +40,11 @@ class Data extends AbstractHelper
     }
 
     /**
-     * Check if extension is enabled
+     * Check if module is enabled
      *
      * @return boolean
      */
-    public function isEnabled()
+    public function isModuleEnabled()
     {
         return $this->config->getValue(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE);
     }
@@ -54,7 +54,7 @@ class Data extends AbstractHelper
      *
      * @return boolean
      */
-    public function isPreselectedEnabled()
+    public function isPreselectEnabled()
     {
         return $this->config->getValue(self::XML_PATH_PRESELECTED_ENABLED, ScopeInterface::SCOPE_STORE);
     }

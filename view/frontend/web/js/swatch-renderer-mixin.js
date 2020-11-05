@@ -9,13 +9,27 @@ define([
 ], function ($) {
     'use strict';
 
-    var swatchRendererMixin = {
+    let swatchRendererMixin = {
         _init: function () {
             this.options.gallerySwitchStrategy = this.options.jsonConfig.gallerySwitchStrategy;
             this._super();
             this._preselect();
         },
 
+        _OnClick: function ($this, $widget, eventName) {
+            this._super($this, $widget, eventName);
+            this._updateSimpleProductAttributes();
+        },
+
+        _OnChange: function ($this, $widget) {
+            this._super($this, $widget);
+            this._updateSimpleProductAttributes();
+        },
+
+        /**
+         * Preselect configurable product options
+         * @private
+         */
         _preselect: function () {
             let widget = this,
                 options = this.options,
@@ -35,6 +49,11 @@ define([
                 });
         },
 
+        /**
+         * Preselect specific product if set
+         * @param simpleProduct
+         * @private
+         */
         _preselectProduct: function (simpleProduct) {
             let widget = this,
                 classes = widget.options.classes,
@@ -65,6 +84,11 @@ define([
             });
         },
 
+
+        /**
+         * Preselect first not disabled options of configurable product
+         * @private
+         */
         _preselectFirstOptions: function () {
             let widget = this,
                 classes = widget.options.classes;
@@ -89,6 +113,36 @@ define([
                     $select.change();
                 }
             });
+        },
+
+        /**
+         * Update simple product attribute values
+         * @private
+         */
+        _updateSimpleProductAttributes: function () {
+            let widget = this,
+                updateEnabled = widget.options.jsonConfig.attributesUpdateEnabled,
+                options = _.object(_.keys(widget.optionsMap), {}),
+                attributesForUpdate = widget.options.jsonConfig.attributesForUpdate,
+                key;
+
+            widget.element.find('.' + widget.options.classes.attributeClass + '[option-selected]').each(function () {
+                let attributeId = $(this).attr('attribute-id');
+                options[attributeId] = $(this).attr('option-selected');
+            });
+
+            if (updateEnabled && attributesForUpdate) {
+                key = _.findKey(widget.options.jsonConfig.index, options);
+                if (key) {
+                    let content = attributesForUpdate[key];
+
+                    for (let i = 0; i < content['length']; i++) {
+                        if ($(content['identity'][i]).length && content['value'][i]) {
+                            $(content['identity'][i]).html(content['value'][i]);
+                        }
+                    }
+                }
+            }
         }
     };
 

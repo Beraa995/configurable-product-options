@@ -100,6 +100,8 @@ class Configurable
                 continue;
             }
 
+            $content[$product->getId()]['length'][] = count($data);
+
             foreach ($data as $value) {
                 $content[$product->getId()]['identity'][] = $value['identity'];
                 //@TODO Get value with EAV class

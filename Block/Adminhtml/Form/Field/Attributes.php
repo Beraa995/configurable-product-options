@@ -20,7 +20,10 @@ class Attributes extends AbstractFieldArray
     protected function _prepareToRender()
     {
         $this->addColumn('identity', ['label' => __('Element Class or ID'), 'class' => 'required-entry']);
-        $this->addColumn('simple_product_attribute', ['label' => __('Product\'s Attribute Code'), 'class' => 'required-entry']);
+        $this->addColumn(
+            'simple_product_attribute',
+            ['label' => __('Product\'s Attribute Code'), 'class' => 'required-entry']
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = __('Add');
     }

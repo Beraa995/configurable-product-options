@@ -101,18 +101,21 @@ define([
 
             options[attributeId] = element.value;
 
-            if (updateEnabled && attributesForUpdate) {
-                key = _.findKey(widget.options.spConfig.index, options);
-
-                let content = attributesForUpdate[key];
-                if (content) {
-                    for (let i = 0; i < content['length']; i++) {
-                        if ($(content['identity'][i]).length && content['value'][i]) {
-                            $(content['identity'][i]).html(content['value'][i]);
-                        }
-                    }
-                }
+            if (!updateEnabled || !attributesForUpdate) {
+                return false;
             }
+
+            key = _.findKey(widget.options.spConfig.index, options);
+            if (!key) {
+                return false;
+            }
+
+            let content = attributesForUpdate[key];
+            $.each(content, function (index, item) {
+                if ($(item.identity).length) {
+                    $(item.identity).html(item.value);
+                }
+            });
         },
     };
 

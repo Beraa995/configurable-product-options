@@ -42,6 +42,7 @@ define([
             }
 
             //@TODO preselect in product lists
+            //@TODO add helper js
             gallery.data('gallery') ?
                 widget._preselectProduct(simpleProduct) :
                 gallery.on('gallery:loaded', function () {
@@ -131,18 +132,21 @@ define([
                 options[attributeId] = $(this).attr('option-selected');
             });
 
-            if (updateEnabled && attributesForUpdate) {
-                key = _.findKey(widget.options.jsonConfig.index, options);
-                if (key) {
-                    let content = attributesForUpdate[key];
-
-                    for (let i = 0; i < content['length']; i++) {
-                        if ($(content['identity'][i]).length && content['value'][i]) {
-                            $(content['identity'][i]).html(content['value'][i]);
-                        }
-                    }
-                }
+            if (!updateEnabled || !attributesForUpdate) {
+                return false;
             }
+
+            key = _.findKey(widget.options.jsonConfig.index, options);
+            if (!key) {
+                return false;
+            }
+
+            let content = attributesForUpdate[key];
+            $.each(content, function (index, item) {
+                if ($(item.identity).length) {
+                    $(item.identity).html(item.value);
+                }
+            });
         }
     };
 

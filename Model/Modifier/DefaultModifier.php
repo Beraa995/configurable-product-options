@@ -14,7 +14,7 @@ class DefaultModifier implements ModifierInterface
     /**
      * @inheritDoc
      */
-    public function processValue($attributeCode, $productId, $cssSelector, $value)
+    public function processValue(string $attributeCode, int $productId, string $cssSelector, $value)
     {
         return $value;
     }

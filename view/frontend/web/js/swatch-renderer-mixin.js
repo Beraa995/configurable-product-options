@@ -41,8 +41,6 @@ define([
                 return false;
             }
 
-            //@TODO preselect in product lists
-            //@TODO add helper js
             gallery.data('gallery') ?
                 widget._preselectProduct(simpleProduct) :
                 gallery.on('gallery:loaded', function () {
@@ -141,10 +139,11 @@ define([
                 return false;
             }
 
+
             let content = attributesForUpdate[key];
             $.each(content, function (index, item) {
-                if ($(item.identity).length) {
-                    $(item.identity).html(item.value);
+                if ($(item.selector).length) {
+                    $(item.selector).html(item.value);
                 }
             });
         }

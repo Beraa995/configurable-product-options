@@ -112,8 +112,8 @@ define([
 
             let content = attributesForUpdate[key];
             $.each(content, function (index, item) {
-                if ($(item.identity).length) {
-                    $(item.identity).html(item.value);
+                if ($(item.selector).length) {
+                    $(item.selector).html(item.value);
                 }
             });
         },

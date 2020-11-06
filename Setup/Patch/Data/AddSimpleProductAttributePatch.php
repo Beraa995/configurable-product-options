@@ -41,8 +41,8 @@ class AddSimpleProductAttributePatch implements DataPatchInterface
     public function apply()
     {
         $this->moduleDataSetup->startSetup();
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $eavSetup->addAttribute(
             Product::ENTITY,
             'simple_product_preselect',
@@ -56,6 +56,7 @@ class AddSimpleProductAttributePatch implements DataPatchInterface
                 'apply_to'      => 'configurable',
             ]
         );
+
         $this->moduleDataSetup->endSetup();
     }
 

@@ -17,5 +17,5 @@ interface ModifierInterface
      * @param mixed $value
      * @return mixed
      */
-    public function processValue($attributeCode, $productId, $cssSelector, $value);
+    public function processValue(string $attributeCode, int $productId, string $cssSelector, $value);
 }

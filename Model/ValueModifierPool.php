@@ -18,7 +18,7 @@ class ValueModifierPool
      * ValueModifierPool constructor.
      * @param array $modifiers
      */
-    public function __construct($modifiers = [])
+    public function __construct(array $modifiers = [])
     {
         $this->modifiers = $this->sort($modifiers);
     }
@@ -44,9 +44,8 @@ class ValueModifierPool
      * @param array $modifiers
      * @return array
      */
-    protected function sort($modifiers)
+    protected function sort(array $modifiers)
     {
-        //@TODO add types to the arguments in all classes
         usort($modifiers, function ($a, $b) {
             return $this->getSortOrderNumber($a) <=> $this->getSortOrderNumber($b);
         });

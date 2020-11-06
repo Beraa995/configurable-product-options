@@ -127,8 +127,7 @@ class PreselectModifier extends AbstractModifier
         $disabled = ['value' => 0, 'label' => 'Disabled'];
 
         foreach ($this->getSimpleProducts() as $index => $product) {
-            //@TODO If product is salable
-            if ($product->getData('status') == 1) {
+            if ($product->isSaleable()) {
                 if ($configurableOption !== $product->getData('entity_id')) {
                     $simpleProducts[$index]['value'] = $product->getData('entity_id');
                     $simpleProducts[$index]['label'] = $product->getData('name') . ' - ' . $product->getData('sku');

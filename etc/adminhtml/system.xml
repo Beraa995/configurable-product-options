@@ -56,7 +56,6 @@
                 <label>Simple Product Details</label>
                 <depends>
                     <field id="configurable_options/configurable_general/enabled">1</field>
-                    <field id="configurable_options/configurable_frontend/simple_details">1</field>
                 </depends>
 
                 <field id="simple_updates" translate="label" type="select" sortOrder="10"
@@ -64,7 +63,7 @@
                     <label>Attributes</label>
                     <frontend_model>BKozlic\ConfigurableOptions\Block\Adminhtml\Form\Field\Attributes</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>Class or ID should be like in CSS. e.g. (.class , #id, .class1 .class2)</comment>
+                    <comment>Class or ID should be like in the CSS. e.g. (.class , #id, .class1 .class2)</comment>
                 </field>
             </group>
         </section>

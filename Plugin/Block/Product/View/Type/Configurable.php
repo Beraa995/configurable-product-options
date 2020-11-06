@@ -73,7 +73,7 @@ class Configurable
      * @param string $result
      * @return string
      */
-    public function afterGetJsonConfig(MagentoConfigurable $subject, $result)
+    public function afterGetJsonConfig(MagentoConfigurable $subject, string $result)
     {
         if (!$this->helper->isModuleEnabled()) {
             return $result;
@@ -82,8 +82,8 @@ class Configurable
         $configData = $this->jsonSerializer->unserialize($result);
         $currentProduct = $subject->getProduct();
 
-        $configData['preselectEnabled'] = $this->helper->isPreselectEnabled();
-        $configData['attributesUpdateEnabled'] = $this->helper->isSimpleProductUpdateEnabled();
+        $configData['preselectEnabled'] = (bool)$this->helper->isPreselectEnabled();
+        $configData['attributesUpdateEnabled'] = (bool)$this->helper->isSimpleProductUpdateEnabled();
         $configData['gallerySwitchStrategy'] = $this->helper->getGallerySwitchStrategy() ?: 'replace';
         $configData['simpleProduct'] = $this->getSimpleProductId($currentProduct);
         $configData['attributesForUpdate'] = $this->getSimpleProductUpdates($subject);
@@ -97,7 +97,7 @@ class Configurable
      * @param Product $product
      * @return string|null
      */
-    protected function getSimpleProductId($product)
+    protected function getSimpleProductId(Product $product)
     {
         return $product->getData('simple_product_preselect');
     }
@@ -108,11 +108,10 @@ class Configurable
      * @param MagentoConfigurable $subject
      * @return array
      */
-    protected function getSimpleProductUpdates($subject)
+    protected function getSimpleProductUpdates(MagentoConfigurable $subject)
     {
         $content = [];
 
-        //@TODO Test this
         if (!$this->helper->isSimpleProductUpdateEnabled()) {
             return $content;
         }
@@ -147,11 +146,11 @@ class Configurable
                 $processedValue = $this->processAttributeValue(
                     $value['simple_product_attribute'],
                     $product->getId(),
-                    $value['identity'],
+                    $value['selector'],
                     $attributeValue
                 );
                 $content[$product->getId()][] = [
-                    'identity' => $value['identity'],
+                    'selector' => $value['selector'],
                     'value' => $processedValue,
                 ];
             }
@@ -168,7 +167,7 @@ class Configurable
      * @param mixed $value
      * @return mixed
      */
-    protected function processAttributeValue($attributeCode, $productId, $cssSelector, $value)
+    protected function processAttributeValue(string $attributeCode, int $productId, string $cssSelector, $value)
     {
         foreach ($this->modifierPool->getModifiers() as $modifier) {
             if ($modifier instanceof ModifierInterface) {

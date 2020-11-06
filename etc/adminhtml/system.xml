@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category  BKozlic
+ * @package   BKozlic\ConfigurableOptions
+ * @author    Berin Kozlic - berin.kozlic@gmail.com
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="configurable_options" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="510">
+            <label>Configurable Options</label>
+            <tab>catalog</tab>
+            <resource>BKozlic_ConfigurableOptions::configurableoptions</resource>
+
+            <group id="configurable_general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Configurable Options General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="configurable_frontend" translate="label" type="text" sortOrder="20"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Frontend Options</label>
+                <depends>
+                    <field id="configurable_options/configurable_general/enabled">1</field>
+                </depends>
+
+                <field id="gallery_switch" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Simple Product Images</label>
+                    <source_model>BKozlic\ConfigurableOptions\Model\Config\Source\GallerySwitch</source_model>
+                </field>
+
+                <field id="preselected_options" translate="label comment" type="select" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preselect Product Options</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Selects first options by default. You can set default preselect in the product view admin section.</comment>
+                </field>
+
+                <field id="simple_details" translate="label" type="select" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Update Simple Product Attribute</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="product_attributes" translate="label" type="text" sortOrder="30"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Simple Product Details</label>
+                <depends>
+                    <field id="configurable_options/configurable_general/enabled">1</field>
+                </depends>
+
+                <field id="simple_updates" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Attributes</label>
+                    <frontend_model>BKozlic\ConfigurableOptions\Block\Adminhtml\Form\Field\Attributes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Class or ID should be like in the CSS. e.g. (.class , #id, .class1 .class2)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

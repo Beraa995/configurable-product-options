@@ -82,7 +82,7 @@ class PreselectModifier extends AbstractModifier
     }
 
     /**
-     * Get simple product from current product
+     * Get simple products from current configurable product
      *
      * @return Product[]
      */

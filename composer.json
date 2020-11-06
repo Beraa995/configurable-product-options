@@ -1,6 +1,6 @@
 {
     "name": "bkozlic/configurable-options",
-    "description": "Magento 2 Module for configurable product",
+    "description": "Magento 2 module for configurable product",
     "type": "magento2-module",
     "license":"OSL-3.0",
     "authors": [

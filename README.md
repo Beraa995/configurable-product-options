@@ -5,7 +5,7 @@ values from selected simple product.
 
 ## Installation
 
-```bkozlic/configurable-options```
+```composer require bkozlic/configurable-options```
 
 ```php bin/magento setup:upgrade```
 

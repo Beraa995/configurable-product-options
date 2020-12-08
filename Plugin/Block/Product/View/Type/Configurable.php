@@ -136,10 +136,11 @@ class Configurable
                 }
 
                 if (!$attribute) {
-                    continue;
+                    $attributeValue = null;
+                } else {
+                    $attributeValue = $attribute->getFrontend()->getValue($childProduct);
                 }
 
-                $attributeValue = $attribute->getFrontend()->getValue($childProduct);
                 $processedValue = $this->processAttributeValue(
                     $value['simple_product_attribute'],
                     $childProduct,

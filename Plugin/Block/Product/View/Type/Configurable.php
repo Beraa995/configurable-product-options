@@ -10,6 +10,7 @@ namespace BKozlic\ConfigurableOptions\Plugin\Block\Product\View\Type;
 use BKozlic\ConfigurableOptions\Helper\Data;
 use BKozlic\ConfigurableOptions\Model\ModifierInterface;
 use BKozlic\ConfigurableOptions\Model\ValueModifierPool;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
@@ -145,7 +146,7 @@ class Configurable
 
                 $processedValue = $this->processAttributeValue(
                     $value['simple_product_attribute'],
-                    $product->getId(),
+                    $childProduct,
                     $value['selector'],
                     $attributeValue
                 );
@@ -162,16 +163,16 @@ class Configurable
     /**
      * Process value with custom modifiers
      * @param string $attributeCode
-     * @param int $productId
+     * @param ProductInterface $product
      * @param string $cssSelector
      * @param mixed $value
      * @return mixed
      */
-    protected function processAttributeValue(string $attributeCode, int $productId, string $cssSelector, $value)
+    protected function processAttributeValue(string $attributeCode, ProductInterface $product, string $cssSelector, $value)
     {
         foreach ($this->modifierPool->getModifiers() as $modifier) {
             if ($modifier instanceof ModifierInterface) {
-                $value = $modifier->processValue($attributeCode, $productId, $cssSelector, $value);
+                $value = $modifier->processValue($attributeCode, $product, $cssSelector, $value);
             }
         }
 

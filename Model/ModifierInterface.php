@@ -7,15 +7,17 @@
  */
 namespace BKozlic\ConfigurableOptions\Model;
 
+use Magento\Catalog\Api\Data\ProductInterface;
+
 interface ModifierInterface
 {
     /**
      * Process attribute value
      * @param string $attributeCode
-     * @param int $productId
+     * @param ProductInterface $product
      * @param string $cssSelector
      * @param mixed $value
      * @return mixed
      */
-    public function processValue(string $attributeCode, int $productId, string $cssSelector, $value);
+    public function processValue(string $attributeCode, ProductInterface $product, string $cssSelector, $value);
 }

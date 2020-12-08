@@ -8,13 +8,14 @@
 namespace BKozlic\ConfigurableOptions\Model\Modifier;
 
 use BKozlic\ConfigurableOptions\Model\ModifierInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 
 class DefaultModifier implements ModifierInterface
 {
     /**
      * @inheritDoc
      */
-    public function processValue(string $attributeCode, int $productId, string $cssSelector, $value)
+    public function processValue(string $attributeCode, ProductInterface $product, string $cssSelector, $value)
     {
         return $value;
     }

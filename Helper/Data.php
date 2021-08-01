@@ -9,13 +9,12 @@ declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
 /**
  * Configurable Options Data Helper
  */
-class Data extends AbstractHelper
+class Data
 {
     const XML_PATH_ENABLED = 'configurable_options/configurable_general/enabled';
     const XML_PATH_GALLERY = 'configurable_options/configurable_frontend/gallery_switch';

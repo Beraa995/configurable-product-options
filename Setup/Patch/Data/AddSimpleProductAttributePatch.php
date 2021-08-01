@@ -5,6 +5,7 @@
  * @author    Berin Kozlic - berin.kozlic@gmail.com
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Setup\Patch\Data;
 
 use Magento\Catalog\Model\Product;

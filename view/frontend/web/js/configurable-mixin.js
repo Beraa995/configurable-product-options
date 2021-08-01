@@ -6,8 +6,9 @@
  */
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'BKozlic_ConfigurableOptions/js/model/get-async-attribute-values'
+], function ($, _, getAsyncValues) {
     'use strict';
 
     let configurableMixin = {
@@ -95,13 +96,12 @@ define([
             let widget = this,
                 updateEnabled = widget.options.spConfig.attributesUpdateEnabled,
                 options = _.object(_.keys(widget.optionsMap), {}),
-                attributesForUpdate = widget.options.spConfig.attributesForUpdate,
                 key,
                 attributeId = element.config.id;
 
             options[attributeId] = element.value;
 
-            if (!updateEnabled || !attributesForUpdate) {
+            if (!updateEnabled) {
                 return false;
             }
 
@@ -110,13 +110,55 @@ define([
                 return false;
             }
 
-            let content = attributesForUpdate[key];
+            this._updateAttributeValuesFromJson(key);
+            this._updateAttributeValuesAsynchronously(key);
+        },
+
+        /**
+         * Update simple product attribute values from json
+         * @param productId
+         * @private
+         */
+        _updateAttributeValuesFromJson: function (productId) {
+            let attributesForUpdate = this.options.spConfig.attributesForUpdate;
+            if (!attributesForUpdate) {
+                return false;
+            }
+
+            let content = attributesForUpdate[productId];
+            this._addValuesToHtmlElements(content);
+        },
+
+        /**
+         * Update simple product attribute values asynchronously
+         * @param productId
+         * @private
+         */
+        _updateAttributeValuesAsynchronously: function (productId) {
+            let response = getAsyncValues(productId),
+                widget = this;
+
+            response
+                .then(data => data.json())
+                .then(result => {
+                    if (result.success) {
+                        widget._addValuesToHtmlElements(result.data);
+                    }
+                });
+        },
+
+        /**
+         * Add values to the html elements
+         * @param content
+         * @private
+         */
+        _addValuesToHtmlElements: function (content) {
             $.each(content, function (index, item) {
                 if ($(item.selector).length) {
                     $(item.selector).html(item.value);
                 }
             });
-        },
+        }
     };
 
     return function (configurable) {

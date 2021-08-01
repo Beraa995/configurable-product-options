@@ -5,16 +5,16 @@
  * @author    Berin Kozlic - berin.kozlic@gmail.com
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
 /**
  * Configurable Options Data Helper
  */
-class Data extends AbstractHelper
+class Data
 {
     const XML_PATH_ENABLED = 'configurable_options/configurable_general/enabled';
     const XML_PATH_GALLERY = 'configurable_options/configurable_frontend/gallery_switch';
@@ -30,8 +30,8 @@ class Data extends AbstractHelper
     protected $config;
 
     /**
+     * Data constructor.
      * @param ScopeConfigInterface $config
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         ScopeConfigInterface $config

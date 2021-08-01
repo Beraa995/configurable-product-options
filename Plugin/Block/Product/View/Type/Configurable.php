@@ -5,26 +5,24 @@
  * @author    Berin Kozlic - berin.kozlic@gmail.com
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Plugin\Block\Product\View\Type;
 
 use BKozlic\ConfigurableOptions\Helper\Data;
-use BKozlic\ConfigurableOptions\Model\ModifierInterface;
-use BKozlic\ConfigurableOptions\Model\ValueModifierPool;
-use Magento\Catalog\Api\Data\ProductInterface;
+use BKozlic\ConfigurableOptions\Service\GetProductAttributeValuesService;
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Model\ProductRepository;
-use Magento\Catalog\Model\ResourceModel\Product as ProductResource;
 use Magento\ConfigurableProduct\Block\Product\View\Type\Configurable as MagentoConfigurable;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Serialize\SerializerInterface;
 
+/**
+ * Class Configurable
+ */
 class Configurable
 {
     /**
-     * @var Json
+     * @var SerializerInterface
      */
-    protected $jsonSerializer;
+    protected $serializer;
 
     /**
      * @var Data
@@ -32,46 +30,32 @@ class Configurable
     protected $helper;
 
     /**
-     * @var ProductRepository
+     * @var GetProductAttributeValuesService
      */
-    protected $productRepository;
-
-    /**
-     * @var ProductResource
-     */
-    protected $productResource;
-
-    /**
-     * @var ValueModifierPool
-     */
-    protected $modifierPool;
+    protected $getProductAttributeValues;
 
     /**
      * Configurable constructor.
-     * @param Json $jsonSerializer
+     * @param SerializerInterface $serializer
      * @param Data $helper
-     * @param ProductRepository $productRepository
-     * @param ProductResource $productResource
-     * @param ValueModifierPool $modifierPool
+     * @param GetProductAttributeValuesService $getProductAttributeValues
      */
     public function __construct(
-        Json $jsonSerializer,
+        SerializerInterface $serializer,
         Data $helper,
-        ProductRepository $productRepository,
-        ProductResource $productResource,
-        ValueModifierPool $modifierPool
+        GetProductAttributeValuesService $getProductAttributeValues
     ) {
-        $this->jsonSerializer = $jsonSerializer;
+        $this->serializer = $serializer;
         $this->helper = $helper;
-        $this->productRepository = $productRepository;
-        $this->productResource = $productResource;
-        $this->modifierPool = $modifierPool;
+        $this->getProductAttributeValues = $getProductAttributeValues;
     }
 
     /**
      * Add additional data for configurable product
+     *
      * @param MagentoConfigurable $subject
      * @param string $result
+     *
      * @return string
      */
     public function afterGetJsonConfig(MagentoConfigurable $subject, string $result)
@@ -80,7 +64,7 @@ class Configurable
             return $result;
         }
 
-        $configData = $this->jsonSerializer->unserialize($result);
+        $configData = $this->serializer->unserialize($result);
         $currentProduct = $subject->getProduct();
 
         $configData['preselectEnabled'] = (bool)$this->helper->isPreselectEnabled();
@@ -89,13 +73,14 @@ class Configurable
         $configData['simpleProduct'] = $this->getSimpleProductId($currentProduct);
         $configData['attributesForUpdate'] = $this->getSimpleProductUpdates($subject);
 
-        return $this->jsonSerializer->serialize($configData);
+        return $this->serializer->serialize($configData);
     }
 
     /**
      * Return simple product id for preselect
      *
      * @param Product $product
+     *
      * @return string|null
      */
     protected function getSimpleProductId(Product $product)
@@ -107,6 +92,7 @@ class Configurable
      * Return simple product attribute values
      *
      * @param MagentoConfigurable $subject
+     *
      * @return array
      */
     protected function getSimpleProductUpdates(MagentoConfigurable $subject)
@@ -117,62 +103,11 @@ class Configurable
             return $content;
         }
 
-        $data = $this->jsonSerializer->unserialize($this->helper->getSimpleAttributes());
-
         foreach ($subject->getAllowProducts() as $product) {
-            try {
-                $childProduct = $this->productRepository->getById($product->getId());
-            } catch (NoSuchEntityException $e) {
-                continue;
-            }
-
-            foreach ($data as $value) {
-                try {
-                    $attribute = $attributeValue = $this->productResource->getAttribute(
-                        $value['simple_product_attribute']
-                    );
-                } catch (LocalizedException $e) {
-                    $attribute = null;
-                }
-
-                if (!$attribute) {
-                    $attributeValue = null;
-                } else {
-                    $attributeValue = $attribute->getFrontend()->getValue($childProduct);
-                }
-
-                $processedValue = $this->processAttributeValue(
-                    $value['simple_product_attribute'],
-                    $childProduct,
-                    $value['selector'],
-                    $attributeValue
-                );
-                $content[$product->getId()][] = [
-                    'selector' => $value['selector'],
-                    'value' => $processedValue,
-                ];
-            }
+            $productId = $product->getId();
+            $content[$productId] = $this->getProductAttributeValues->execute($productId);
         }
 
         return $content;
-    }
-
-    /**
-     * Process value with custom modifiers
-     * @param string $attributeCode
-     * @param ProductInterface $product
-     * @param string $cssSelector
-     * @param mixed $value
-     * @return mixed
-     */
-    protected function processAttributeValue(string $attributeCode, ProductInterface $product, string $cssSelector, $value)
-    {
-        foreach ($this->modifierPool->getModifiers() as $modifier) {
-            if ($modifier instanceof ModifierInterface) {
-                $value = $modifier->processValue($attributeCode, $product, $cssSelector, $value);
-            }
-        }
-
-        return $value;
     }
 }

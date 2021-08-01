@@ -21,7 +21,7 @@
             </configurable_frontend>
 
             <product_attributes>
-                <simple_updates>{"name":{"selector":".product.sku .value","simple_product_attribute":"sku"},"sku":{"selector":".page-title-wrapper span","simple_product_attribute":"name"}}</simple_updates>
+                <simple_updates>{"name":{"selector":".product.sku .value","simple_product_attribute":"sku","load_asynchronously": "0"},"sku":{"selector":".page-title-wrapper span","simple_product_attribute":"name","load_asynchronously": "0"}}</simple_updates>
             </product_attributes>
         </configurable_options>
     </default>

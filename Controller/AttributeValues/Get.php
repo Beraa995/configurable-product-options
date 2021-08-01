@@ -14,14 +14,9 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Get Controller
- *
- * @copyright  Copyright (c) 2021 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * @link       https://www.techdivision.com/
- * @author     Allstars Team <allstars@techdivision.com>
  */
 class Get implements HttpGetActionInterface
 {
@@ -64,6 +59,11 @@ class Get implements HttpGetActionInterface
         $this->getProductAttributeValuesService = $getProductAttributeValuesService;
     }
 
+    /**
+     * Return attribute values specified in config based on product id
+     *
+     * @return \Magento\Framework\App\ResponseInterface
+     */
     public function execute()
     {
         $productId = $this->request->getParam('productId');

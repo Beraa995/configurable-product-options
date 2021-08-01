@@ -21,10 +21,6 @@ use Magento\Framework\Serialize\SerializerInterface;
 
 /**
  * Class GetProductAttributeValuesService
- *
- * @copyright  Copyright (c) 2021 TechDivision GmbH <info@techdivision.com> - TechDivision GmbH
- * @link       https://www.techdivision.com/
- * @author     Allstars Team <allstars@techdivision.com>
  */
 class GetProductAttributeValuesService
 {
@@ -51,7 +47,7 @@ class GetProductAttributeValuesService
     /**
      * @var ProductResource
      */
-    private $productResource;
+    protected $productResource;
 
     /**
      * SimpleProductValueModifierService constructor.
@@ -80,6 +76,7 @@ class GetProductAttributeValuesService
      *
      * @param int $productId
      * @param bool $asyncLoad
+     *
      * @return array
      */
     public function execute($productId, bool $asyncLoad = false)
@@ -98,7 +95,7 @@ class GetProductAttributeValuesService
             }
 
             try {
-                $attribute = $attributeValue = $this->productResource->getAttribute(
+                $attribute = $this->productResource->getAttribute(
                     $value['simple_product_attribute']
                 );
             } catch (LocalizedException $e) {

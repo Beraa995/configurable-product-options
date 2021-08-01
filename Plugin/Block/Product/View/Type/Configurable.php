@@ -14,6 +14,9 @@ use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Block\Product\View\Type\Configurable as MagentoConfigurable;
 use Magento\Framework\Serialize\SerializerInterface;
 
+/**
+ * Class Configurable
+ */
 class Configurable
 {
     /**

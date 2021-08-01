@@ -1,6 +1,6 @@
 # Magento 2 Configurable Options
 
-This module provides functionality for preselecting configurable product options and updating attribute 
+This module provides functionality for preselecting configurable product options and updating attribute
 values from selected simple product.
 
 ## Installation
@@ -47,7 +47,7 @@ Add modifier in the di.xml. There is already default modifier in the module whic
 
 Sort order defines in which order modifiers from the pool will be executed.
 
-Modifier class must implement 
+Modifier class must implement
 ```\BKozlic\ConfigurableOptions\Model\ModifierInterface```
 
 ```
@@ -65,6 +65,9 @@ If you want to add value for the products but there is no attribute for it, you 
 * In the modifier's processValue function check if attribute code is equal to the code you added in configuration and add value you want to display to the frontend.
 
 By default, product name and sku are updated after simple product is preselected.
+
+## Recommendations
+It is recommended to set async load for attributes with a big values and attributes which will be added in the html element not visible until you scroll.
 
 ## Prerequisites
 

@@ -6,8 +6,9 @@
  */
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'BKozlic_ConfigurableOptions/js/model/get-async-attribute-values'
+], function ($, _, getAsyncValues) {
     'use strict';
 
     let configurableMixin = {
@@ -125,11 +126,7 @@ define([
             }
 
             let content = attributesForUpdate[productId];
-            $.each(content, function (index, item) {
-                if ($(item.selector).length) {
-                    $(item.selector).html(item.value);
-                }
-            });
+            this._addValuesToHtmlElements(content);
         },
 
         /**
@@ -138,7 +135,29 @@ define([
          * @private
          */
         _updateAttributeValuesAsynchronously: function (productId) {
+            let response = getAsyncValues(productId),
+                widget = this;
 
+            response
+                .then(data => data.json())
+                .then(result => {
+                    if (result.success) {
+                        widget._addValuesToHtmlElements(result.data);
+                    }
+                });
+        },
+
+        /**
+         * Add values to the html elements
+         * @param content
+         * @private
+         */
+        _addValuesToHtmlElements: function (content) {
+            $.each(content, function (index, item) {
+                if ($(item.selector).length) {
+                    $(item.selector).html(item.value);
+                }
+            });
         }
     };
 

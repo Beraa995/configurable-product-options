@@ -6,8 +6,9 @@
  */
 define([
     'jquery',
+    'underscore',
     'BKozlic_ConfigurableOptions/js/model/get-async-attribute-values'
-], function ($, getAsyncValues) {
+], function ($, _, getAsyncValues) {
     'use strict';
 
     let swatchRendererMixin = {

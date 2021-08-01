@@ -67,10 +67,18 @@ define([
                 let attributeId = index,
                     optionId = value,
                     $wrapper = $('.' + classes.attributeClass + '[attribute-id="' + attributeId + '"]'),
-                    $optionsWrapper = $wrapper.find('.' + classes.attributeOptionsWrapper);
+                    $optionsWrapper;
 
+                if (!$wrapper.length) {
+                    $wrapper = $('.' + classes.attributeClass + '[data-attribute-id="' + attributeId + '"]');
+                }
+
+                $optionsWrapper = $wrapper.find('.' + classes.attributeOptionsWrapper);
                 if ($optionsWrapper.children().is('div')) {
                     let $optionElement = $wrapper.find('.' + classes.optionClass + '[option-id="' + optionId + '"]');
+                    if (!$optionElement.length) {
+                        $optionElement = $wrapper.find('.' + classes.optionClass + '[data-option-id="' + optionId + '"]');
+                    }
 
                     $optionElement.click();
                 } else {
@@ -125,9 +133,17 @@ define([
                 attributesForUpdate = widget.options.jsonConfig.attributesForUpdate,
                 key;
 
-            widget.element.find('.' + widget.options.classes.attributeClass + '[option-selected]').each(function () {
-                let attributeId = $(this).attr('attribute-id');
-                options[attributeId] = $(this).attr('option-selected');
+            widget.element.find('.' + widget.options.classes.attributeClass).each(function () {
+                if (!$(this).attr('data-option-selected') && !$(this).attr('option-selected')) {
+                    return;
+                }
+
+                let attributeId = $(this).attr('data-attribute-id') || $(this).attr('attribute-id'),
+                    selectedValue = $(this).attr('data-option-selected') || $(this).attr('option-selected');
+
+                if (selectedValue) {
+                    options[attributeId] = selectedValue.toString();
+                }
             });
 
             if (!updateEnabled || !attributesForUpdate) {

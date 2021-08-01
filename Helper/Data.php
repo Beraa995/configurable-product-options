@@ -5,6 +5,7 @@
  * @author    Berin Kozlic - berin.kozlic@gmail.com
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -30,8 +31,8 @@ class Data extends AbstractHelper
     protected $config;
 
     /**
+     * Data constructor.
      * @param ScopeConfigInterface $config
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         ScopeConfigInterface $config

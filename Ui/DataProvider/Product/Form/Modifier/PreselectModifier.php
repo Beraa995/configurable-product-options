@@ -5,6 +5,7 @@
  * @author    Berin Kozlic - berin.kozlic@gmail.com
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+declare(strict_types=1);
 namespace BKozlic\ConfigurableOptions\Ui\DataProvider\Product\Form\Modifier;
 
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -27,8 +28,8 @@ class PreselectModifier extends AbstractModifier
     private $locator;
 
     /**
+     * PreselectModifier constructor.
      * @param LocatorInterface $locator
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         LocatorInterface $locator
